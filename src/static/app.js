@@ -8,6 +8,9 @@ document.addEventListener("DOMContentLoaded", () => {
   if (savedDarkMode === "enabled") {
     document.body.classList.add("dark-mode");
     darkModeIcon.textContent = "☀️";
+  } else {
+    // Explicitly set moon icon for light mode (default)
+    darkModeIcon.textContent = "🌙";
   }
   
   // Toggle dark mode
