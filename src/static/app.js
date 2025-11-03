@@ -519,6 +519,9 @@ document.addEventListener("DOMContentLoaded", () => {
       </div>
     `;
 
+    // Escape description for HTML attributes
+    const escapedDescription = details.description.replace(/"/g, '&quot;');
+
     activityCard.innerHTML = `
       ${tagHtml}
       <h4>${name}</h4>
@@ -554,16 +557,16 @@ document.addEventListener("DOMContentLoaded", () => {
       </div>
       <div class="social-sharing">
         <span class="share-label">Share:</span>
-        <button class="share-button twitter" data-activity="${name}" data-description="${details.description.replace(/"/g, '&quot;')}" aria-label="Share on Twitter">
+        <button class="share-button twitter" data-activity="${name}" data-description="${escapedDescription}" aria-label="Share on Twitter">
           <span class="share-icon">🐦</span>
         </button>
-        <button class="share-button facebook" data-activity="${name}" data-description="${details.description.replace(/"/g, '&quot;')}" aria-label="Share on Facebook">
+        <button class="share-button facebook" data-activity="${name}" data-description="${escapedDescription}" aria-label="Share on Facebook">
           <span class="share-icon">📘</span>
         </button>
-        <button class="share-button linkedin" data-activity="${name}" data-description="${details.description.replace(/"/g, '&quot;')}" aria-label="Share on LinkedIn">
+        <button class="share-button linkedin" data-activity="${name}" data-description="${escapedDescription}" aria-label="Share on LinkedIn">
           <span class="share-icon">💼</span>
         </button>
-        <button class="share-button email" data-activity="${name}" data-description="${details.description.replace(/"/g, '&quot;')}" aria-label="Share via Email">
+        <button class="share-button email" data-activity="${name}" data-description="${escapedDescription}" aria-label="Share via Email">
           <span class="share-icon">✉️</span>
         </button>
       </div>
@@ -598,9 +601,17 @@ document.addEventListener("DOMContentLoaded", () => {
       button.addEventListener("click", (event) => {
         const activityName = event.currentTarget.dataset.activity;
         const description = event.currentTarget.dataset.description;
-        const platform = event.currentTarget.classList.contains("twitter") ? "twitter" :
-                        event.currentTarget.classList.contains("facebook") ? "facebook" :
-                        event.currentTarget.classList.contains("linkedin") ? "linkedin" : "email";
+        
+        // Determine platform from button classes
+        let platform = "email"; // default
+        if (event.currentTarget.classList.contains("twitter")) {
+          platform = "twitter";
+        } else if (event.currentTarget.classList.contains("facebook")) {
+          platform = "facebook";
+        } else if (event.currentTarget.classList.contains("linkedin")) {
+          platform = "linkedin";
+        }
+        
         handleShare(activityName, description, formattedSchedule, platform);
       });
     });
@@ -627,7 +638,7 @@ document.addEventListener("DOMContentLoaded", () => {
     
     switch(platform) {
       case "twitter":
-        url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`;
+        url = `https://x.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`;
         window.open(url, "_blank", "width=600,height=400");
         break;
       
